@@ -47,3 +47,13 @@ async def update_task(id: int, task_data: TaskCreate, db: Session = Depends(get_
     db.commit()
     db.refresh(task)
     return task
+
+@app.delete("/{id}")
+async def delete_task(id: int, db: Session = Depends(get_db)):
+    task = db.query(Task).filter(Task.id == id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+    
+    db.delete(task)
+    db.commit()
+    return {"detail": "Task deleted successfully"}
