@@ -57,3 +57,8 @@ async def delete_task(id: int, db: Session = Depends(get_db)):
     db.delete(task)
     db.commit()
     return {"detail": "Task deleted successfully"}
+
+@app.get("/tasks/", response_model=list[TaskResponse])
+async def get_tasks(db: Session = Depends(get_db)):
+    tasks = db.query(Task).all()
+    return tasks
