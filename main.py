@@ -1,8 +1,9 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from models.task import Task
-from schemas import TaskCreate
+from schemas import TaskCreate, TaskResponse
 from db import get_db
+from fastapi import HTTPException
 
 app = FastAPI()
 
@@ -26,3 +27,10 @@ async def create_task(task_data: TaskCreate, db: Session = Depends(get_db)):
         "description": new_task.description,
         "completed": new_task.completed
     }}
+
+@app.get("/{id}", response_model=TaskResponse)
+async def get_task(id: int, db: Session = Depends(get_db)):
+    task = db.query(Task).filter(Task.id == id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+    return task
