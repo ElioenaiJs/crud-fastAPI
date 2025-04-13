@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from models import task 
 
 app = FastAPI()
 
