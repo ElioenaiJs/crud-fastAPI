@@ -4,7 +4,7 @@ from models.task import Task
 from schemas.schemas import TaskCreate, TaskResponse
 from db.db import get_db
 
-router = APIRouter()
+router = APIRouter(prefix="/task/api/v1", tags=["Tasks"])
 
 @router.post("/", summary="Crear nueva tarea")
 async def create_task(task_data: TaskCreate, db: Session = Depends(get_db)):
