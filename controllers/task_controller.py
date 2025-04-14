@@ -11,17 +11,13 @@ async def create_task(task_data: TaskCreate, db: Session = Depends(get_db)):
     new_task = Task(
         title=task_data.title,
         description=task_data.description,
-        completed=task_data.completed
+        completed=task_data.completed,
+        due_date=task_data.due_date 
     )
     db.add(new_task)
     db.commit()
     db.refresh(new_task)
-    return {"task": {
-        "id": new_task.id,
-        "title": new_task.title,
-        "description": new_task.description,
-        "completed": new_task.completed
-    }}
+    return new_task
 
 @router.get("/{id}", response_model=TaskResponse, summary="Obtener tarea por ID")
 async def get_task(id: int, db: Session = Depends(get_db)):
@@ -39,6 +35,7 @@ async def update_task(id: int, task_data: TaskCreate, db: Session = Depends(get_
     task.title = task_data.title
     task.description = task_data.description
     task.completed = task_data.completed
+    task.due_date = task_data.due_date
     db.commit()
     db.refresh(task)
     return task
