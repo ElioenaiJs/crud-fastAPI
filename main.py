@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from models.task import Task
-from schemas import TaskCreate, TaskResponse
-from db import get_db
+from schemas.schemas import TaskCreate, TaskResponse
+from db.db import get_db
 from fastapi import HTTPException
 
 app = FastAPI()
