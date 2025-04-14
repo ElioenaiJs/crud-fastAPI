@@ -11,6 +11,11 @@ async def create_task(task_data: TaskCreate, db: Session = Depends(get_db)):
     new_task = TaskService.create_task(db, task_data)
     return new_task
 
+@router.get("/overdue", response_model=list[TaskResponse], summary="Obtener tareas vencidas")
+async def get_overdue_tasks(db: Session = Depends(get_db)):
+    overdue_tasks = TaskService.get_overdue_tasks(db)
+    return overdue_tasks
+
 @router.get("/{id}", response_model=TaskResponse, summary="Obtener tarea por ID")
 async def get_task(id: int, db: Session = Depends(get_db)):
     task = TaskService.get_task(db, id)

@@ -2,6 +2,8 @@ from sqlalchemy.orm import Session
 from models.task import Task
 from schemas.schemas import TaskCreate
 from fastapi import HTTPException
+from datetime import datetime
+
 
 class TaskService:
     @staticmethod
@@ -50,3 +52,11 @@ class TaskService:
     @staticmethod
     def get_tasks(db: Session) -> list[Task]:
         return db.query(Task).all()
+
+    @staticmethod
+    def get_overdue_tasks(db: Session) -> list[Task]:
+        current_date = datetime.now()
+        overdue_tasks = db.query(Task).filter(Task.due_date < current_date, Task.completed == False).all()
+        if not overdue_tasks:
+            raise HTTPException(status_code=404, detail="No overdue tasks found")
+        return overdue_tasks
