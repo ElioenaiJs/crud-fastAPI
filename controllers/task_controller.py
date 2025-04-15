@@ -6,6 +6,11 @@ from services.task_service import TaskService
 
 router = APIRouter(prefix="/task/api/v1", tags=["Tasks"])
 
+@router.get("/earring", response_model=list[TaskResponse], summary="Obtener tareas pendientes")
+async def get_pending_tasks(db: Session = Depends(get_db)):
+    tasks = TaskService.get_pending_tasks(db)
+    return tasks
+
 @router.post("/", summary="Crear nueva tarea")
 async def create_task(task_data: TaskCreate, db: Session = Depends(get_db)):
     new_task = TaskService.create_task(db, task_data)
