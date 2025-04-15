@@ -16,6 +16,7 @@ pip install -r requirements.txt
 docker-compose up -d
 
 # 4. Ejecutar la API
+source venv/bin/activate  
 uvicorn app.main:app --reload
 
 # 5. Acceder a:
